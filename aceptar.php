@@ -1,8 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
+    <!-- Creamos los datos de la pagina y unimos con los estilos creados en CSS  -->
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,9 +15,10 @@
 
 <body>
     <?php 
-        include("php/conexion.php");
+        include("php/conexion.php"); //Incluimos la concexion a la base de datos
         //$r=$conexion->fetch(PDO::FETCH_ASSOC);
     ?>
+    <!-- Cabecera de la página -->
     <header class="header">
         <div class="contenedor contenido-header">
 
@@ -34,17 +36,20 @@
         </div>
     </header>
 
+    <!-- Barra con el texto "Lidera tu futuro" -->
     <p class="lidera">lidera tu futuro</p>
 
 
-
+    <!-- Contenido principal -->
     <main class="contenedor cuadro formulario sombra referenciado">
         <h1>Pagos</h1>
         
             <div>
+                <!-- Creamos una tabla para mostrar los pagos -->
                 <table id="tablita" width="" class="display">
                     <thead>
                         <tr>
+                            <!-- Titulo de cada columna de la tabla -->
                             <th>Folio</th>
                             <th >No. Control</th>
                             <th>Alumno</th>
@@ -59,17 +64,17 @@
                         
                     <?php
                         $conexion=$base->query("SELECT * FROM pago p inner join alumnos a ON p.id_alumno=a.id_alumno 
-                        inner join servicios c ON c.id_servicio=p.id_servicio");
-                        while($r=$conexion->fetch(PDO::FETCH_ASSOC)){
-                        $archivo="Archivo no subido";
-                        if($r["archivo"]=="si"){
+                        inner join servicios c ON c.id_servicio=p.id_servicio");//Hacemos la consulta MySQL
+                        while($r=$conexion->fetch(PDO::FETCH_ASSOC)){//Por cada registro, se agrega una columna a la tabla
+                        $archivo="Archivo no subido";//Por defecto, el alumno no habrá subido su archivo
+                        if($r["archivo"]=="si"){//Si el alumno ya subio su archivo, cambia el texto
                             $archivo="Archivo subido correctamente";
                         }
                     ?>
                     
                         <tr>
                             
-                            <td><?php echo $r["folio"]; ?></td>
+                            <td><?php echo $r["folio"]; //Se escriben los datos de cada pago?></td>
                             <td><?php echo $r["id_alumno"];?></td>
                             <td><?php echo $r["nombre"]; ?></td>
                             <td><?php echo $r["servicio"]; ?></td>
@@ -77,11 +82,12 @@
                             <td id="estado"><?php echo $r["estado"]; ?></td>
                             <td>
                                 <form action="mensaje.php">
-                                    <input type="hidden" name="folio" value="<?php echo $r["folio"]; ?>">
+                                    <input type="hidden" name="folio" value="<?php echo $r["folio"];//Datos ocultos para usar PHP?>">
                                     <input type="hidden" name="id" value="<?php echo $r["id_alumno"]; ?>">
                                     <input type="hidden" name="estado" value="<?php echo $r["estado"]; ?>">
                                     <input type="hidden" name="nombre" value="<?php echo $r["nombre"]; ?>">
                 
+                                    <!-- Botones para aceptar o rechazar los pagos -->
                                     <input type="submit" name="aceptar" value="Aceptar">
                                     <input type="submit" name="rechazar" value="Rechazar">
                                 </form>
@@ -112,6 +118,7 @@
 </body>
 
     <script>
+        //Usamos un JQuery para crear la paginacion y el buscador
         $(document).ready( function () {
             $('#tablita').DataTable({
                 language:{
